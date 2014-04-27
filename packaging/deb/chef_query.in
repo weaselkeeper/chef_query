@@ -6,7 +6,7 @@ Priority: optional
 Homepage: https://github.com/weaselkeeper/chef_query
 Standards-Version: 3.9.2
 
-Package: chef_query
+Package: chef-query
 Version: VERSION
 Maintainer: FULLNAME <EMAIL>
 Depends: python
