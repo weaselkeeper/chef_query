@@ -28,7 +28,6 @@ rm -rf %{buildroot}
 %{__mkdir_p} %{buildroot}%{_localstatedir}/log/%{name}
 cp -r ./*.py %{buildroot}%{_bindir}/
 cp -r ./*.conf %{buildroot}%{_sysconfdir}/%{name}
-cp chef_query-init %{buildroot}%{_sysconfdir}/init.d/%{name}
 %files
 %{_bindir}/*.py
 %{_sysconfdir}/%{name}/*
