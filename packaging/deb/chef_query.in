@@ -3,7 +3,7 @@
 # Source: <source package name; defaults to package name>
 Section: misc
 Priority: optional
-Homepage: https://github.com/weaselkeeper/chef_query.git
+Homepage: https://github.com/weaselkeeper/chef_query
 Standards-Version: 3.9.2
 
 Package: chef_query
