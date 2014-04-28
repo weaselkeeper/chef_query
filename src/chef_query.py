@@ -42,7 +42,7 @@ email: weaselkeeper@gmail.com
 PROJECTNAME = 'chef_query'
 import os
 import sys
-from ConfigParser import SafeConfigParser
+import ConfigParser
 import logging
 import ssl
 import socket
@@ -62,9 +62,11 @@ log = logging.getLogger(PROJECTNAME)
 def run(_args):
     """ Do, whatever it is, we do. """
     # parse config
-    parsed_config = get_config(args)
-    print parsed_config
-    log.debug((_args, parsed_config))
+    get_config(args)
+    print _args.HOST
+    print _args.CERT
+    print _args.CLIENT
+    log.debug(_args)
     return
 
 
@@ -94,8 +96,7 @@ def get_options():
 def get_config(_args):
     """ Now parse the config file.  Get any and all info from config file."""
     log.debug('Now in get_config')
-    parser = SafeConfigParser()
-    configuration = {}
+    parser = ConfigParser.SafeConfigParser()
     configfile = os.path.join('/etc', PROJECTNAME, PROJECTNAME + '.conf')
     if _args.config:
         _config = _args.config
@@ -105,11 +106,18 @@ def get_config(_args):
         else:
             log.warn('No config file found at %s', configfile)
             sys.exit(1)
-
+    log.debug("Using config file from %s", _config)
     parser.read(_config)
+    try:
+	_args.HOST = parser.get('SSL', 'HOST')
+	_args.CERT = parser.get('SSL', 'CERT')
+	_args.CLIENT = parser.get('SSL', 'CLIENT')
+    except (ConfigParser.NoOptionError, ConfigParser.NoSectionError) as error:
+	log.warn("something failed in config read, python says %s" , error)
+	sys.exit(1)
 
     log.debug('leaving get_config')
-    return configuration
+    return
 
 # Here we start if called directly (the usual case.)
 if __name__ == "__main__":
