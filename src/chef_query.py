@@ -44,7 +44,8 @@ import os
 import sys
 from ConfigParser import SafeConfigParser
 import logging
-
+import ssl
+import socket
 
 # Setup logging
 logging.basicConfig(level=logging.WARN,
