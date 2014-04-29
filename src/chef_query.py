@@ -109,12 +109,12 @@ def get_config(_args):
     log.debug("Using config file from %s", _config)
     parser.read(_config)
     try:
-	_args.HOST = parser.get('SSL', 'HOST')
-	_args.CERT = parser.get('SSL', 'CERT')
-	_args.CLIENT = parser.get('SSL', 'CLIENT')
+        _args.HOST = parser.get('SSL', 'HOST')
+        _args.CERT = parser.get('SSL', 'CERT')
+        _args.CLIENT = parser.get('SSL', 'CLIENT')
     except (ConfigParser.NoOptionError, ConfigParser.NoSectionError) as error:
-	log.warn("something failed in config read, python says %s" , error)
-	sys.exit(1)
+        log.warn("something failed in config read, python says %s" , error)
+        sys.exit(1)
 
     log.debug('leaving get_config')
     return
