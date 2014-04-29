@@ -63,10 +63,20 @@ def run(_args):
     """ Do, whatever it is, we do. """
     # parse config
     get_config(args)
-    print _args.HOST
-    print _args.CERT
-    print _args.CLIENT
+    ssl_host = _args.HOST
+    ssl_cert = _args.CERT
+    ssl_clientuser = _args.CLIENT
+    conn = ssl_conn(ssl_host, ssl_cert, ssl_clientuser)
     log.debug(_args)
+
+    log.debug('leaving run now')
+    return
+
+
+def ssl_conn(ssl_host, ssl_cert, ssl_clientuser):
+    """ Make an ssl connection, and return it to calling function """
+    log.debug('in ssl_conn')
+    # placeholder
     return
 
 
