@@ -66,18 +66,19 @@ def run(_args):
     ssl_host = _args.HOST
     ssl_cert = _args.CERT
     ssl_clientuser = _args.CLIENT
-    conn = ssl_conn(ssl_host, ssl_cert, ssl_clientuser)
+    ssl_cacerts = _args.CA_CERTS
+    conn = ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts)
     log.debug(_args)
 
     log.debug('leaving run now')
     return
 
 
-def ssl_conn(ssl_host, ssl_cert, ssl_clientuser):
+def ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts):
     """ Make an ssl connection, and return it to calling function """
     log.debug('in ssl_conn with %s', ssl_host)
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    ssl_sock = ssl.wrap_socket(sock, ca_certs='/etc/ssl/certs/ca-certificates.crt', cert_reqs=ssl.CERT_REQUIRED)
+    ssl_sock = ssl.wrap_socket(sock, ca_certs=ssl_cacerts, cert_reqs=ssl.CERT_REQUIRED)
     ssl_sock.connect((ssl_host, 443))
     if args.debug:
         DNS_IP = repr(ssl_sock.getpeername())
@@ -128,6 +129,7 @@ def get_config(_args):
         _args.HOST = parser.get('SSL', 'HOST')
         _args.CERT = parser.get('SSL', 'CERT')
         _args.CLIENT = parser.get('SSL', 'CLIENT')
+        _args.CA_CERTS = parser.get('SSL', 'CA_CERTS')
     except (ConfigParser.NoOptionError, ConfigParser.NoSectionError) as error:
         log.warn("something failed in config read, python says %s" , error)
         sys.exit(1)
