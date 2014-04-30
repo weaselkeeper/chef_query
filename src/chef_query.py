@@ -75,9 +75,13 @@ def run(_args):
 
 def ssl_conn(ssl_host, ssl_cert, ssl_clientuser):
     """ Make an ssl connection, and return it to calling function """
-    log.debug('in ssl_conn')
-    # placeholder
-    return
+    log.debug('in ssl_conn with %s', ssl_host)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    ssl_sock = ssl.wrap_socket(sock, ca_certs='/etc/ssl/certs/ca-certificates.crt', cert_reqs=ssl.CERT_REQUIRED)
+    ssl_sock.connect((ssl_host, 443))
+    print repr(ssl_sock.getpeername())
+    print ssl_sock.cipher()
+    return ssl_sock
 
 
 def get_options():
