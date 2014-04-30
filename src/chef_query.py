@@ -46,7 +46,7 @@ import ConfigParser
 import logging
 import ssl
 import socket
-
+import pprint
 # Setup logging
 logging.basicConfig(level=logging.WARN,
                     format='%(asctime)s %(levelname)s - %(message)s',
@@ -86,6 +86,7 @@ def ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts):
         DNS_IP = repr(ssl_sock.getpeername())
         CIPHER = ssl_sock.cipher()
         log.debug('Received the following: %s, %s', DNS_IP, CIPHER)
+        print pprint.pformat(ssl_sock.getpeercert())
     return ssl_sock
 
 
