@@ -68,9 +68,11 @@ def run(_args):
     ssl_clientuser = _args.CLIENT
     ssl_cacerts = _args.CA_CERTS
     conn = ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts)
+    conn.write("GET / HTTP/1.1\r\nHost: " + ssl_host + "\r\n\r\n")
+    print conn.read()
     log.debug(_args)
-
     log.debug('leaving run now')
+    conn.close()
     return
 
 
