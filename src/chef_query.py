@@ -79,8 +79,10 @@ def ssl_conn(ssl_host, ssl_cert, ssl_clientuser):
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     ssl_sock = ssl.wrap_socket(sock, ca_certs='/etc/ssl/certs/ca-certificates.crt', cert_reqs=ssl.CERT_REQUIRED)
     ssl_sock.connect((ssl_host, 443))
-    print repr(ssl_sock.getpeername())
-    print ssl_sock.cipher()
+    if args.debug:
+        DNS_IP = repr(ssl_sock.getpeername())
+        CIPHER = ssl_sock.cipher()
+        log.debug('Received the following: %s, %s', DNS_IP, CIPHER)
     return ssl_sock
 
 
