@@ -83,9 +83,9 @@ def ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts):
     ssl_sock = ssl.wrap_socket(sock, ca_certs=ssl_cacerts, cert_reqs=ssl.CERT_REQUIRED)
     ssl_sock.connect((ssl_host, 443))
     if args.debug:
-        DNS_IP = repr(ssl_sock.getpeername())
-        CIPHER = ssl_sock.cipher()
-        log.debug('Received the following: %s, %s', DNS_IP, CIPHER)
+        dns_ip = repr(ssl_sock.getpeername())
+        cipher = ssl_sock.cipher()
+        log.debug('Received the following: %s, %s', dns_ip, cipher)
         print pprint.pformat(ssl_sock.getpeercert())
     return ssl_sock
 
