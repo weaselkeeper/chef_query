@@ -102,8 +102,6 @@ def get_options():
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Enable debugging during execution.',
                         default=None)
-    parser.add_argument('-r', '--readable', action='store_true', default=False,
-                        help='Display output in human readable formant.')
     parser.add_argument('-c', '--config', action='store', default=None,
                         help='Specify a path to an alternate config file')
 
