@@ -65,7 +65,7 @@ logging.getLogger(PROJECTNAME).addHandler(console)
 log = logging.getLogger(PROJECTNAME)
 
 
-class EchoClient(LineReceiver):
+class ConnClient(LineReceiver):
     end="Bye-bye!"
     def connectionMade(self):
         self.sendLine("GET / HTTP/1.1\r\nHost: api.opscode.com \r\n\r\n")
@@ -79,8 +79,8 @@ class EchoClient(LineReceiver):
         if line==self.end:
             self.transport.loseConnection()
 
-class EchoClientFactory(ClientFactory):
-    protocol = EchoClient
+class ConnClientFactory(ClientFactory):
+    protocol = ConnClient
 
     def clientConnectionFailed(self, connector, reason):
         print 'connection failed:', reason.getErrorMessage()
@@ -108,7 +108,7 @@ def run(_args):
 def ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts):
     """ Make an ssl connection, and return it to calling function """
     log.debug('in ssl_conn with %s', ssl_host)
-    factory = EchoClientFactory()
+    factory = ConnClientFactory()
     with open('keyfile.pem') as keyFile:
         with open('server.crt') as certFile:
             clientCert = ssl.PrivateCertificate.loadPEM(
