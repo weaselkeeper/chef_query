@@ -90,8 +90,6 @@ class EchoClientFactory(ClientFactory):
         print 'connection lost:', reason.getErrorMessage()
         reactor.stop()
 
-
-
 def run(_args):
     """ Do, whatever it is, we do. """
     # parse config
@@ -100,27 +98,19 @@ def run(_args):
     ssl_cert = _args.CERT
     ssl_clientuser = _args.CLIENT
     ssl_cacerts = _args.CA_CERTS
-    conn = ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts)
-    conn.write("GET / HTTP/1.1\r\nHost: " + ssl_host + "\r\n\r\n")
-    print conn.read()
+    reactor = ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts)
+    reactor.run()
     log.debug(_args)
     log.debug('leaving run now')
-    conn.close()
     return
 
 
 def ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts):
     """ Make an ssl connection, and return it to calling function """
     log.debug('in ssl_conn with %s', ssl_host)
-    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    ssl_sock = ssl.wrap_socket(sock, ca_certs=ssl_cacerts, cert_reqs=ssl.CERT_REQUIRED)
-    ssl_sock.connect((ssl_host, 443))
-    if args.debug:
-        dns_ip = repr(ssl_sock.getpeername())
-        cipher = ssl_sock.cipher()
-        log.debug('Received the following: %s, %s', dns_ip, cipher)
-        print pprint.pformat(ssl_sock.getpeercert())
-    return ssl_sock
+    factory = EchoClientFactory()
+    reactor.connectSSL(ssl_host, 443, factory, ssl.CertificateOptions())
+    return reactor
 
 
 def get_options():
@@ -183,5 +173,4 @@ if __name__ == "__main__":
         log.setLevel(logging.WARN)
 
         # and now we can do, whatever it is, we do.
-    sys.exit(0)
-    #sys.exit(run(args))
+    sys.exit(run(args))
