@@ -47,6 +47,12 @@ import logging
 import ssl
 import socket
 import pprint
+
+#Twisted imports
+from twisted.internet import reactor
+from twisted.internet.protocol import Factory, Protocol
+from twisted.internet.endpoints import SSL4ClientEndpoint
+
 # Setup logging
 logging.basicConfig(level=logging.WARN,
                     format='%(asctime)s %(levelname)s - %(message)s',
@@ -57,6 +63,27 @@ console = logging.StreamHandler(sys.stderr)
 console.setLevel(logging.WARN)
 logging.getLogger(PROJECTNAME).addHandler(console)
 log = logging.getLogger(PROJECTNAME)
+
+
+# Setup twisted class
+
+class Greeter(Protocol):
+    def sendMessage(self, msg):
+        self.transport.write("Message %s\n" % msg)
+
+class GreeterFactory(Factory):
+    def buildProtocol(self, addr):
+        return Greeter()
+
+def gotProtocol(p):
+    p.sendMessage("Hello")
+    reactor.callLater(1, p.sendMessage, "This is sent in a second")
+    reactor.callLater(2, p.transport.loseConnection)
+
+point = SSL4ClientEndpoint(reactor, "google.com", 443)
+d = point.connect(GreeterFactory())
+d.addCallback(gotProtocol)
+reactor.run()
 
 
 def run(_args):
@@ -150,4 +177,5 @@ if __name__ == "__main__":
         log.setLevel(logging.WARN)
 
         # and now we can do, whatever it is, we do.
-    sys.exit(run(args))
+    sys.exit(0)
+    #sys.exit(run(args))
