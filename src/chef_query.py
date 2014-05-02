@@ -109,10 +109,13 @@ def ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts):
     """ Make an ssl connection, and return it to calling function """
     log.debug('in ssl_conn with %s', ssl_host)
     factory = ConnClientFactory()
-    with open('keyfile.pem') as keyFile:
-        with open('server.crt') as certFile:
-            clientCert = ssl.PrivateCertificate.loadPEM(
-            keyFile.read() + certFile.read())
+    try:
+        with open('keyfile.pem') as keyFile:
+            with open('server.crt') as certFile:
+                clientCert = ssl.PrivateCertificate.loadPEM(
+                keyFile.read() + certFile.read())
+    except:
+        log.warn("Sorry, there was some error with the certs")
     reactor.connectSSL(ssl_host, 443, factory, ssl.CertificateOptions())
     return reactor
 
