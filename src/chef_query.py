@@ -49,9 +49,9 @@ import socket
 import pprint
 
 #Twisted imports
-from twisted.internet import reactor
-from twisted.internet.protocol import Factory, Protocol
-from twisted.internet.endpoints import SSL4ClientEndpoint
+from twisted.internet import ssl, reactor
+from twisted.internet.protocol import ClientFactory
+from twisted.protocols.basic import LineReceiver
 
 # Setup logging
 logging.basicConfig(level=logging.WARN,
@@ -65,25 +65,31 @@ logging.getLogger(PROJECTNAME).addHandler(console)
 log = logging.getLogger(PROJECTNAME)
 
 
-# Setup twisted class
+class EchoClient(LineReceiver):
+    end="Bye-bye!"
+    def connectionMade(self):
+        self.sendLine("GET / HTTP/1.1\r\nHost: api.opscode.com \r\n\r\n")
+        self.sendLine(self.end)
 
-class Greeter(Protocol):
-    def sendMessage(self, msg):
-        self.transport.write("Message %s\n" % msg)
+    def connectionLost(self, reason):
+        print 'connection lost (protocol)'
 
-class GreeterFactory(Factory):
-    def buildProtocol(self, addr):
-        return Greeter()
+    def lineReceived(self, line):
+        print "receive:", line
+        if line==self.end:
+            self.transport.loseConnection()
 
-def gotProtocol(p):
-    p.sendMessage("Hello")
-    reactor.callLater(1, p.sendMessage, "This is sent in a second")
-    reactor.callLater(2, p.transport.loseConnection)
+class EchoClientFactory(ClientFactory):
+    protocol = EchoClient
 
-point = SSL4ClientEndpoint(reactor, "google.com", 443)
-d = point.connect(GreeterFactory())
-d.addCallback(gotProtocol)
-reactor.run()
+    def clientConnectionFailed(self, connector, reason):
+        print 'connection failed:', reason.getErrorMessage()
+        reactor.stop()
+
+    def clientConnectionLost(self, connector, reason):
+        print 'connection lost:', reason.getErrorMessage()
+        reactor.stop()
+
 
 
 def run(_args):
