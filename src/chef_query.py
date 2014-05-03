@@ -44,9 +44,6 @@ import os
 import sys
 import ConfigParser
 import logging
-import ssl
-import socket
-import pprint
 
 #Twisted imports
 from twisted.internet import ssl, reactor
