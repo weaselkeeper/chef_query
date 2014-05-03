@@ -66,7 +66,7 @@ log = logging.getLogger(PROJECTNAME)
 
 
 class ConnClient(LineReceiver):
-    end="Bye-bye!"
+    end = "Bye-bye!"
     def connectionMade(self):
         self.sendLine("GET / HTTP/1.1\r\nHost: api.opscode.com \r\n\r\n")
         self.sendLine(self.end)
@@ -76,7 +76,7 @@ class ConnClient(LineReceiver):
 
     def lineReceived(self, line):
         print "receive:", line
-        if line==self.end:
+        if line == self.end:
             self.transport.loseConnection()
 
 class ConnClientFactory(ClientFactory):
@@ -162,7 +162,7 @@ def get_config(_args):
         _args.CLIENT = parser.get('SSL', 'CLIENT')
         _args.CA_CERTS = parser.get('SSL', 'CA_CERTS')
     except (ConfigParser.NoOptionError, ConfigParser.NoSectionError) as error:
-        log.warn("something failed in config read, python says %s" , error)
+        log.warn("something failed in config read, python says %s", error)
         sys.exit(1)
 
     log.debug('leaving get_config')
