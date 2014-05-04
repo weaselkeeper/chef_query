@@ -10,7 +10,7 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-root-%(%{__id_u} -n)
 BuildArch:      noarch
 
 Requires:       python
-Requires:       rpm-python
+Requires:       python-twisted
 Requires:       python-argparse
 Requires:       python-simplejson
 
