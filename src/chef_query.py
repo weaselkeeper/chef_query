@@ -80,7 +80,9 @@ class ConnClient(LineReceiver):
             self.transport.loseConnection()
 
 class ConnClientFactory(ClientFactory):
-    protocol = ConnClient
+    """ Factory method for ssl connection"""
+    def __init__(self):
+        self.protocol = ConnClient
 
     def clientConnectionFailed(self, connector, reason):
         print 'connection failed:', reason.getErrorMessage()
