@@ -115,8 +115,8 @@ def ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts):
         with open('keyfile.pem') as keyFile:
             with open('server.crt') as certFile:
                 clientCert = ssl.PrivateCertificate.loadPEM(
-                keyFile.read() + certFile.read())
-    except:
+                    keyFile.read() + certFile.read())
+    except IOError:
         log.warn("Sorry, there was some error with the certs")
     reactor.connectSSL(ssl_host, 443, factory, ssl.CertificateOptions())
     return reactor
