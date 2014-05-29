@@ -100,8 +100,8 @@ def run(_args):
     ssl_cert = _args.CERT
     ssl_clientuser = _args.CLIENT
     ssl_cacerts = _args.CA_CERTS
-    reactor = ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts)
-    reactor.run()
+    _reactor = ssl_conn(ssl_host, ssl_cert, ssl_clientuser, ssl_cacerts)
+    _reactor.run()
     log.debug(_args)
     log.debug('leaving run now')
     return
