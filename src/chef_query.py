@@ -64,10 +64,12 @@ log = logging.getLogger(PROJECTNAME)
 
 class ConnClient(LineReceiver):
     """ Make connection to ssl enabled target """
+    log.debug('in connclient')
     def __init__(self):
         self.end = "Bye-bye!"
 
     def connectionMade(self):
+        log.debug('in connectionMade')
         self.sendLine("GET / HTTP/1.1\r\nHost: api.opscode.com \r\n\r\n")
         self.sendLine(self.end)
 
