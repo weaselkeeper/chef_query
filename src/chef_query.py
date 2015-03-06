@@ -69,6 +69,7 @@ class ConnClient(LineReceiver):
         self.end = "Bye-bye!"
 
     def connectionMade(self):
+        """man connection method"""
         log.debug('in connectionMade')
         self.sendLine("GET / HTTP/1.1\r\nHost: api.opscode.com \r\n\r\n")
         self.sendLine(self.end)
