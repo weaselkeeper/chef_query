@@ -74,10 +74,6 @@ class ConnClient(LineReceiver):
         self.sendLine("GET / HTTP/1.1\r\nHost: api.opscode.com \r\n\r\n")
         self.sendLine(self.end)
 
-    def connectionLost(self, reason):
-        """ Function to handle connection lost"""
-        print 'connection lost (protocol)'
-
     def lineReceived(self, line):
         print "receive:", line
         if line == self.end:
