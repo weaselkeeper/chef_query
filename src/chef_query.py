@@ -75,6 +75,7 @@ class ConnClient(LineReceiver):
         self.sendLine(self.end)
 
     def lineReceived(self, line):
+        """ Receive and check for eol """
         print "receive:", line
         if line == self.end:
             self.transport.loseConnection()
