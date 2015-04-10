@@ -65,7 +65,7 @@ log = logging.getLogger(PROJECTNAME)
 class ConnClient(LineReceiver):
     """ Make connection to ssl enabled target """
     def __init__(self):
-    log.debug('in connclient')
+        log.debug('in connclient')
         self.end = "Bye-bye!"
 
     def connectionMade(self):
