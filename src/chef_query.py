@@ -130,7 +130,7 @@ def get_options():
     import argparse
 
     parser = argparse.ArgumentParser(
-        description='Someproject does something')
+        description='Query chef nodes')
     parser.add_argument('-n', '--dry-run', action='store_true',
                         help='Dry run, do not actually perform action',
                         default=False)
